@@ -1,29 +1,34 @@
-#install.packages("shiny")
 library(shiny)
 
-shinyUI( pageWithSidebar(
-        # Application title
-        headerPanel("Guess The Number!"),
-        
-        sidebarPanel(
-                #numericInput('guess', 'Number', 1, min = 1, max = 100, step = 1),
-                #submitButton('Submit')
-                textInput('guess', 'Number', value = ""),
-                h5('Please press \'Go!\' only on your first attempt'),
-                actionButton("goButton", "Go!")
-        ), 
-        mainPanel(
-                h2('Guess an integer between 1 and 100'),
-                h5('The objective of this game is to guess an integer between
-                   1 and 100 (inclusive) and try to match it with the computer\'s
-                   selection'),
-                h3('Results of guess'),
-                h4('You entered'),
-                verbatimTextOutput("inputValue"),
-                h4('Which is...'),
-                verbatimTextOutput("outputValue"),
-                h5('Please note that the application will continue running even
-                   after you have guessed the number correctly. ),
-                        )
-)
-)
+# Define UI for dataset viewer application
+shinyUI(fluidPage(
+  
+  # Application title
+  titlePanel("Reactivity"),
+  
+  # Sidebar with controls to provide a caption, select a dataset,
+  # and specify the number of observations to view. Note that
+  # changes made to the caption in the textInput control are
+  # updated in the output area immediately as you type
+  sidebarLayout(
+    sidebarPanel(
+      textInput("caption", "Caption:", "Data Summary"),
+      
+      selectInput("dataset", "Choose a dataset:", 
+                  choices = c("rock", "pressure", "cars")),
+      
+      numericInput("obs", "Number of observations to view:", 10)
+    ),
+    
+    
+    # Show the caption, a summary of the dataset and an HTML 
+    # table with the requested number of observations
+    mainPanel(
+      h3(textOutput("caption", container = span)),
+      
+      verbatimTextOutput("summary"), 
+      
+      tableOutput("view")
+    )
+  )
+))
