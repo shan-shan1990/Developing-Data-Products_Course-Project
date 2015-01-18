@@ -1,34 +1,25 @@
 library(shiny)
 
-# Define UI for dataset viewer application
-shinyUI(fluidPage(
-  
-  # Application title
-  titlePanel("Reactivity"),
-  
-  # Sidebar with controls to provide a caption, select a dataset,
-  # and specify the number of observations to view. Note that
-  # changes made to the caption in the textInput control are
-  # updated in the output area immediately as you type
-  sidebarLayout(
+shinyUI( 
+  pageWithSidebar(
+    # Application title 
+    headerPanel("Motor Vehicle data Plot"),
     sidebarPanel(
-      textInput("caption", "Caption:", "Data Summary"),
-      
-      selectInput("dataset", "Choose a dataset:", 
-                  choices = c("rock", "pressure", "cars")),
-      
-      numericInput("obs", "Number of observations to view:", 10)
+      textInput('plottitle', 'Plot Title:', value = "MPG vs. Weight"),
+      helpText("Adjusts the title of the plot."),
+      selectInput('xvariable', 'Choose an X Variable:', c("Weight", "Cylinders","Horsepower", "Transmission"), selected = "mtcars$wt"),
+      helpText("Selects a different variable for plotting"),
+      textInput('xtitle', 'X Label:', value = "Weight"),
+      helpText("Adjusts the x-label of the plot."),
+      checkboxInput('regchk',"Include Regression?:"),
+      helpText("Include a regression line or not."),
+      submitButton('Submit')
     ),
-    
-    
-    # Show the caption, a summary of the dataset and an HTML 
-    # table with the requested number of observations
     mainPanel(
-      h3(textOutput("caption", container = span)),
-      
-      verbatimTextOutput("summary"), 
-      
-      tableOutput("view")
-    )
+      p("The options to the left will help you to adjust the chart's title and x-label."),
+      p("Hence, you can control what variable is plotted on the x-axis,"),
+      p("as well as a user-selectable switch to include the regression line."),
+      plotOutput("newPlot")
+    ) 
   )
-))
+)
